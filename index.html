@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bubble Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Gilroy;
+        }
+        html,body {
+            width: 100%;
+            height: 100%;
+        }
+        #main {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgb(127, 200, 127);
+            width: 100%;
+            height: 100%;
+        }
+        #panel {
+            width: 60%;
+            height: 80%;
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        #ptop {
+            width: 100%;
+            height: 90px;
+            background-color: darkgreen;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 25%;
+        }
+        .elem {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        .box {
+            border-radius: 50%;
+            color: black;
+            background-color: #fff;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 25px;
+            font-weight: 700;
+        }
+        #pbtm {
+            width: 100%;
+            height: calc(100% - 100px);
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        .bubble {
+            width: 30px;
+            height: 30px;
+            background-color: darkgreen;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+        }
+        .bubble:hover {
+            background-color: rgb(1, 68, 1);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="main">
+        <div id="panel">
+            <div id="ptop">
+                <div class="elem">
+                    <h2>Hit</h2>
+                    <div id="hitval" class="box">5</div>
+                </div>
+                <div class="elem">
+                    <h2>Timer</h2>
+                    <div id="timerval" class="box">60</div>
+                </div>
+                <div class="elem">
+                    <h2>Score</h2>
+                    <div id="scoreval" class="box">0</div>
+                </div>
+            </div>
+            <div id="pbtm">
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        
+        var timer = 60;
+        var hitrn = 0;
+        var score = 0;
+        /* Making Bubbles in Bottom Area */
+        
+        function makeBubble(){
+            var clutter = "";
+            for (var i=0; i<=175; i++) {
+                var rn = Math.floor(Math.random()*10)
+                clutter += `<div class="bubble">${rn}</div>`;
+            }
+            document.querySelector("#pbtm").innerHTML = clutter;
+        }
+        makeBubble();
+
+        /* Timer */
+        function runtimer(){
+            var timerint = setInterval(function(){
+                if(timer > 0){
+                    timer--;
+                    document.querySelector("#timerval").textContent = timer;
+                } else {
+                    clearInterval(timerint)
+                    document.querySelector("#pbtm").innerHTML = `<h1>Game Over</h1>`;
+                }
+            },1000);
+        }
+        runtimer();
+        
+        /* HIT */
+        function getNewHit(){
+            hitrn = Math.floor(Math.random() * 10);
+            document.querySelector("#hitval").textContent = hitrn;
+        }
+        getNewHit();
+        
+        /* Score */
+        function increaseScore(){
+            score += 10;
+            document.querySelector("#scoreval").textContent = score;
+        }
+        
+        /* Event Bubbling */
+        document.querySelector("#pbtm").addEventListener("click",function(dets){
+            var clickednum = Number(dets.target.textContent);
+            if (clickednum === hitrn){
+                increaseScore();
+                makeBubble();
+                getNewHit();
+            }
+        });
+        
+        </script>
+</body>
+</html>
